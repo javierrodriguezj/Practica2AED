@@ -187,3 +187,42 @@ La diferencia principal es que ahora los datos en vez de estar perfectamente ali
 ggsave('./results/Ejercicio3.pdf')
 ```
 
+# Ejercicio 4
+**a)**Carga el fichero Ejercicio4_Data.Rdata. Examina las variables que tiene dicho dataset.
+```{r}
+load('data/Ejercicio4_Data.Rdata')
+head(DatosEjer4)      
+```
+
+**b)**Representa un gráfico de puntos, en el que se muestre la fecha en el eje $x$ y las ventas en el eje $y$. Queremos que los datos de cada fabricante sean de un color distinto. ¿Es este gráfico válido para evaluar la evolución de las ventas de cada fabricante?
+
+```{r}
+
+grafico4_b <- ggplot(DatosEjer4, aes(x = Fecha, y = Ventas, color = Fabricante)) + geom_point()
+
+grafico4_b
+```
+No, no es adecuado porque sin lineas que unan los puntos es complicado saber qué tendencias sigue o qué venta va después de cual.
+
+**c)**Representa un gráfico como el anterior en el que se muestre la línea que une los puntos que antes has representado.
+```{r}
+grafico4_c <- grafico4_b+ geom_line()
+grafico4_c
+```
+
+**d)**Modifica el gráfico anterior para que la tendencia de cada fabricante este trazada con un tipo de línea diferente.
+
+```{r}
+grafico4_d <- grafico4_c+ aes(linetype = Fabricante)
+grafico4_d
+```
+
+
+**e)**Añade el siguiente título al gráfico “Ventas mensuales de diferentes compañías tecnológicas”.
+```{r}
+grafico4_e <- grafico4_d+ ggtitle('Ventas mensuales de diferentes compañías tecnológicas')
+grafico4_e
+```
+
+
+**f)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio4.pdf.
