@@ -226,3 +226,9 @@ grafico4_e
 
 
 **f)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio4.pdf.
+
+```{r}
+
+ggsave("results/Ejercicio4.pdf")
+```
+
