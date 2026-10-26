@@ -330,7 +330,79 @@ grafico7_c
 grafico7_d <-grafico7_c+
   theme(legend.position = "none",                        
     axis.text.x = element_text(angle = 45, hjust = 1))
+grafico7_d
 ```
 
 
 **e)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio7.pdf.
+```{r}
+ggsave("results/Ejercicio7.pdf")
+```
+# Ejercicio 8
+
+**a)** Descarga de la url “http://assets.datacamp.com/blog_assets/chol.txt” el dataset de Datacamp que utilizarás para este ejercicio y cárgalo en un dataframe .
+```{r}
+download.file(url= "http://assets.datacamp.com/blog_assets/chol.txt", destfile = "./data/chol.txt")
+chol <- read.table("./data/chol.txt", header = TRUE)
+```
+
+**b)** Representa el histograma de la variable HEIGHT del dataframe cargado del fichero anterior.
+
+```{r}
+grafico8_b <- ggplot(chol, aes(x = HEIGHT)) + 
+  geom_histogram(aes(y = after_stat(density)))
+grafico8_b
+
+```
+
+
+
+
+**c)**Añade título (“Histograma de la variable Altura”), una etiqueta en el eje $x$ (“Altura (cm)”) y una etiqueta en el eje $y$ (“Frecuencia”).
+```{r}
+grafico8_c<- grafico8_b+labs(
+    title = "Histograma de la variable Altura", 
+    x = "Altura (cm)", 
+    y = "Frecuencia")
+grafico8_c
+```
+
+**d)** Ajusta el rango de representación entre 155 y 195, además fuerza que el histograma tenga 20 bins.(usa parámetro breaks)
+```{r}
+grafico8_d<- grafico8_c + geom_histogram(breaks = seq(155, 195, by = 2))
+grafico8_d
+```
+
+**e)** Haz que las barras del histograma sean de color azul con una grado de transparencia del 50% y el contorno de color rojo.
+```{r}
+## Me graficaba algo raro y he decdido hacer otro:
+
+grafico8_e <- ggplot(chol, aes(x = HEIGHT)) + 
+  geom_histogram(aes(y = after_stat(density)), 
+                 breaks = seq(155, 195, by = 2), 
+                 fill = "blue", 
+                 color = "red", 
+                 alpha = 0.5) +labs(
+    title = "Histograma de la variable Altura", 
+    x = "Altura (cm)", 
+    y = "Frecuencia")
+grafico8_e
+```
+
+**f)** Añade la curva de distribución estimada de color verde.
+```{r}
+grafico8_f<- grafico8_e +geom_density(color = "green")
+grafico8_f
+```
+
+**g)**Representa el mismo histograma del apartado anterior para cada valor de la variable MORT, recuerda utilizar la función facet_grid().
+```{r}
+grafico8_g <- grafico8_f+facet_grid(. ~ MORT)
+grafico8_g
+```
+
+**h)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio8.pdf.
+```{r}
+ggsave("results/Ejercicio8.pdf")
+```
+
