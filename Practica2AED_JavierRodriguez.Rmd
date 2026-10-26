@@ -81,10 +81,109 @@ grafico1+geom_point()
 **d)** Genera ahora el mismo gráfico y almacénalo en grafico2 pero define el aesthetics para visualizar las variables MinTemp y MaxTemp en los ejes de la gráfica y la variable categórica RainTomorrow como el color. A partir del objeto grafico2, representa un gráfico de dispersión en el que se muestren los puntos con el color del punto correspondiente a la variable RainTomorrow.
 
 ```{r}
-grafico2 <- grafico1+aes(color = RainTomorrow)
-grafico2
+grafico2 <- ggplot(ds, aes(x = MinTemp, y = MaxTemp, colour = RainTomorrow))
+grafico2 <-grafico2 + geom_point()
 ```
 
 
-Añade a grafico2 una capa para incluir un título con ggtitle() y almacénalo en grafico3.
-Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio1.pdf
+**e)** Añade a grafico2 una capa para incluir un título con ggtitle() y almacénalo en grafico3.
+```{r}
+grafico3 <- grafico2+ggtitle('Máxima frente a mínima temperatura.')
+grafico3
+```
+
+**f)** Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio1.pdf
+```{r}
+ggsave('results/Ejercicio1.pdf', grafico3)
+```
+
+# Ejercicio 2
+
+**a)** Utilizando ggplot haz un grafico de dispersión en el que representes las variables Temp9am y Pressure9am en los ejes $x$ e $y$, respectivamente.
+
+```{r}
+grafico2_a <- ggplot(ds, aes(x = Temp9am, y = Pressure9am))+geom_point()
+grafico2_a
+```
+
+**b)**Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con la forma del punto.
+```{r}
+grafico2_b <- grafico2_a + aes(shape = RainToday)
+grafico2_b
+```
+
+**c)** Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con el color del punto. ¿Con qué representación (color o forma) se observa mejor la información que introduce la variable RainToday?
+```{r}
+grafico2_c <- grafico2_a + aes(color = RainToday)
+grafico2_c
+```
+Se observa mejor distinguir los puntos por colores más que por forma. Al graficar todo del mismo color, las formas pueden superponerse y no distinguir los triángulos de los círculos.
+
+
+**d)** Añade títulos explicativos al gráfico anterior (debe aparece un título, subtítulo, leyendas e información de las variables representadas en los ejes).
+```{r}
+grafico2_d <- grafico2_c+ labs(title = "Relación entre Temperatura y Presión a las 9 am",
+    subtitle = "Distinción entre precipitación hoy.",
+    x = "Temperatura @ 9am / (au)",
+    y = "Presión @ 9:00 / (au)",
+    color = "Precipitación hoy"
+  )
+
+```
+
+
+**e)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio2.pdf.
+```{r}
+ggsave('./results/Ejercicio2.pdf', grafico2_d)
+```
+
+# Ejercicio 3
+**a)** Carga el fichero iris_tidy.Rdata utilizando lo aprendido en la práctica 1.
+```{r}
+load('data/iris_tidy.Rdata')
+```
+
+**b)**Utiliza la función str() para ver qué variables contiene el dataset.
+```{r}
+str(iris.tidy)
+```
+
+**c)**Crea un objeto ggplot denominado iris.grafico1 en el que esté definido el conjunto de datos iris.tidy alojado en el fichero iris.tidy.RData y un aesthetics en el que en el eje $x$ esté definida la variable Species y en el eje $y$ esté definida la variable Value.
+
+```{r}
+iris.grafico1 <- ggplot(iris.tidy, aes(x = Species, y = Value))
+```
+
+
+**d)** Añade una capa que defina el objeto geométrico necesario para construir un gráfico de dispersión de las variables Species y Value.
+```{r}
+iris.grafico1+geom_point()
+```
+
+**e)** Modifica el aesthetics de iris.grafico1 para visualizar la variable categórica Part y almacénalo en iris.grafico2. A partir del objeto iris.grafico2, representa un gráfico de dispersión en el que se muestren los puntos dados por las variables Species y Value, y el color del punto se corresponda con el valor de la variable Part.
+```{r}
+iris.grafico2 <- iris.grafico1+geom_point()+aes(color=Part)
+iris.grafico2
+```
+
+**f)** Incluye información de la variable Measure haciendo dos gráficos de dispersión (dispuestos en filas) con facet_grid(), como en el apartado de introducción, para los dos valores que toma la variable Measure. Prueba a cambiar la disposición de los gráficos para que sea en columnas ¿Qué disposición, en filas o en columnas, permite comparar mejor los valores de las dos variables?
+
+```{r}
+iris.grafico2 + facet_grid(rows = vars(Measure))
+iris.grafico2 + facet_grid(cols = vars(Measure))
+```
+La mejor disposición es aquella que alinea la variable Value, es decir, en la que obtenemos 1 fila y 2 gráficas. Pese a que la configuración análoga puede ser útil puesto que nos alinea en una columna el tipo de especies, no podemos comparar directamente la variable del eje y que es realmente nuestro objetivo.
+
+**g)**Cambia ahora la capa geom_point() del gráfico anterior por la capa geom_jitter(). ¿Qué diferencia observas?
+
+```{r}
+iris.grafico2 + geom_jitter()+ facet_grid(rows = vars(Measure))
+iris.grafico2 + geom_jitter()+ facet_grid(cols = vars(Measure))
+```
+La diferencia principal es que ahora los datos en vez de estar perfectamente alineados sobre cada una de la categoría de especies se ha añadido un ruido o una pequeña variación en la posición de nuestros datos. Esto es de gran utilidad en nuestro caso porque encontrábamos todos los datos apilados sobre el eje $x$ y, realmente, no se podía apreciar la cantidad de datos que repetían valor.
+
+**h)**Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio3.pdf.
+```{r}
+ggsave('./results/Ejercicio3.pdf')
+```
+
